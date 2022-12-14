@@ -2,14 +2,17 @@ import flatpickr from "flatpickr";
 import Notiflix from 'notiflix';
 import "flatpickr/dist/flatpickr.min.css";
 
-
 const refs = {
-    startBtn: document.querySelector('[data-start]')
+    startBtn: document.querySelector('[data-start]'),
+    daysCounter: document.querySelector('[data-days]'),
+    hoursCounter: document.querySelector('[data-hours]'),
+    minutesCounter: document.querySelector('[data-minutes]'),
+    socondsCounter: document.querySelector('[data-seconds]'),
 }
 
-refs.startBtn.setAttribute('disabled', true)
+refs.startBtn.addEventListener('click', onStartBtnClick)
 
-let milliseconds = null;
+let deltaTime = null;
 let timerId = null;
 
 const flatpickrOptions = {
@@ -27,21 +30,30 @@ const flatpickrOptions = {
     },
 }
 
+beforeStartCountdown ()
+
 const pickr = new flatpickr('#datetime-picker', flatpickrOptions) 
 
+function onStartBtnClick(evt){
+   timerId = setInterval(() => {
+        deltaTime = pickr.selectedDates[0] - new Date();
+        if(deltaTime < 0) {
+            clearInterval(timerId)
+            refs.startBtn.setAttribute('disabled', true)
+            Notiflix.Notify.success('The promotion has ended!!! Select the end date of the promotion to start a new countdown.');
+            return
+        }
+        const time = convertMs(deltaTime);
+        updateClockface(time)
+    }, 1000)
+}
 
+function beforeStartCountdown () {
+    refs.startBtn.setAttribute('disabled', true)
+    Notiflix.Notify.success('Select the end date of the promotion, and press "Start" button!');
+}
 
-    console.dir(pickr.selectedDates[0])
-
-     timerId = setInterval(() => {
-    if(milliseconds <= 0) {
-        clearInterval( timerId)
-    }
-    milliseconds = pickr.selectedDates[0] - new Date();
-    convertMs(milliseconds)
-}, 1000)
-
-function convertMs(ms) {
+  function convertMs(ms) {
     // Number of milliseconds per unit of time
     const second = 1000;
     const minute = second * 60;
@@ -49,14 +61,28 @@ function convertMs(ms) {
     const day = hour * 24;
   
     // Remaining days
-    const days = Math.floor(ms / day);
+    const days = addLeadingZero(Math.floor(ms / day));
     // Remaining hours
-    const hours = Math.floor((ms % day) / hour);
+    const hours = addLeadingZero(Math.floor((ms % day) / hour));
     // Remaining minutes
-    const minutes = Math.floor(((ms % day) % hour) / minute);
+    const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
     // Remaining seconds
-    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+    const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
   
     return { days, hours, minutes, seconds };
   }
+
+  function addLeadingZero(value) {
+    if (String(value).length <= 2 ) {
+        return String(value).padStart(2, '0');
+    } else {
+        return String(value)
+    }
+  }
   
+  function updateClockface({days , hours, minutes, seconds }) {
+    refs.daysCounter.textContent = `${days}`;
+    refs.hoursCounter.textContent = `${hours}`;
+    refs.minutesCounter.textContent = `${minutes}`;
+    refs.socondsCounter.textContent = `${seconds}`;
+  }
