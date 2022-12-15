@@ -4,6 +4,7 @@ import "flatpickr/dist/flatpickr.min.css";
 
 const refs = {
     startBtn: document.querySelector('[data-start]'),
+    faceCounter: document.querySelector('.timer'),
     daysCounter: document.querySelector('[data-days]'),
     hoursCounter: document.querySelector('[data-hours]'),
     minutesCounter: document.querySelector('[data-minutes]'),
@@ -30,6 +31,7 @@ const flatpickrOptions = {
     },
 }
 
+addStyles ()
 beforeStartCountdown ()
 
 const pickr = new flatpickr('#datetime-picker', flatpickrOptions) 
@@ -85,4 +87,26 @@ function beforeStartCountdown () {
     refs.hoursCounter.textContent = `${hours}`;
     refs.minutesCounter.textContent = `${minutes}`;
     refs.socondsCounter.textContent = `${seconds}`;
+  }
+
+  function addStyles () {
+    refs.faceCounter.style.display = 'flex'
+    refs.faceCounter.style.gap = `${15}px`
+    refs.faceCounter.style.marginTop = `${15}px`
+    refs.daysCounter.style.display = 'flex'
+    refs.daysCounter.style.justifyContent = 'center'
+    refs.daysCounter.style.border = `solid`
+    refs.daysCounter.style.minWidth = `${70}px`
+    refs.hoursCounter.style.display = 'flex'
+    refs.hoursCounter.style.justifyContent = 'center'
+    refs.hoursCounter.style.border = `solid`
+    refs.hoursCounter.style.minWidth = `${70}px`
+    refs.minutesCounter.style.display = 'flex'
+    refs.minutesCounter.style.justifyContent = 'center'
+    refs.minutesCounter.style.border = `solid`
+    refs.minutesCounter.style.minWidth = `${70}px`
+    refs.socondsCounter.style.display = 'flex'
+    refs.socondsCounter.style.justifyContent = 'center'
+    refs.socondsCounter.style.border = `solid`
+    refs.socondsCounter.style.minWidth = `${70}px`
   }
