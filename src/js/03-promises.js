@@ -15,7 +15,7 @@ refs.form.addEventListener('submit', onCreatePromiseBtnClick)
 function onCreatePromiseBtnClick (evt) {
   evt.preventDefault();
   dataCollectedFromForm (evt)
-  onStart({ delay, step, amount })
+  onStart(data)
   refs.form.reset();
 }
 
@@ -24,7 +24,7 @@ function dataCollectedFromForm (evt) {
   formData.forEach((value, name) => {
       data[name] = Number(value)
   })
-  return { delay, step, amount } = data;
+  return data;
 }
 
 function onStart({ delay, step, amount }) {
