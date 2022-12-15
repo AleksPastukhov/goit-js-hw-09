@@ -16,7 +16,7 @@ function onCreatePromiseBtnClick (evt) {
   evt.preventDefault();
   dataCollectedFromForm (evt)
   onStart(data)
-  refs.form.reset();
+  // refs.form.reset();
 }
 
 function dataCollectedFromForm (evt) {
@@ -37,8 +37,8 @@ function onStart({ delay, step, amount }) {
   let newDelay = delay;
 
   for (let i = 1; i <= amount; i += 1){
-    newDelay += step;
     startCreatePromises(i, newDelay)
+    newDelay += step;
   }
 
 }
